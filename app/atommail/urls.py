@@ -8,4 +8,6 @@ app_name = 'atommail'
 
 urlpatterns = [
 	path('', atommail.Home.as_view(), name='home'),
+	path('new/message', atommail.NewMessage.as_view(), name='new-message'),
+	path('teste/', atommail.Teste.as_view(), name='teste'),
 ]
