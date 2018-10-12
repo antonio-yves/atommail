@@ -57,7 +57,7 @@ class AddFriend(LoginRequiredMixin, View):
 class ReadMessage(LoginRequiredMixin, View):
 	def get(self, request, pk):
 		mensagem_criptografada = Message.objects.filter(id = pk).first()
-		db = psycopg2.connect("dbname=chaves_privadas user=postgres password=sousa123 host=127.0.0.1")
+		db = psycopg2.connect("dbname=chaves_privadas user=*altere_aqui* password=*altere_aqui* host=127.0.0.1")
 		db.autocommit = True
 		cur = db.cursor(cursor_factory=psycopg2.extras.DictCursor)
 		cur.execute("SELECT * from keys WHERE usuario = '{}'".format(str(self.request.user.pk)))

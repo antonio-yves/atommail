@@ -23,7 +23,7 @@ class UserCreateView(CreateView):
     	chave_publica, chave_privada = geradorChaves(2048)
     	public_key = PublicKey(user = obj, key = chave_publica.exportKey())
     	public_key.save()
-    	db = psycopg2.connect("dbname=chaves_privadas user=postgres password=sousa123 host=127.0.0.1")
+    	db = psycopg2.connect("dbname=chaves_privadas user=*altere_aqui* password=*altere_aqui* host=127.0.0.1")
     	db.autocommit = True
     	cur = db.cursor(cursor_factory=psycopg2.extras.DictCursor)
     	cur.execute("INSERT INTO keys (usuario, chave) VALUES ('{}', '{}')".format(str(obj.pk), chave_privada.exportKey().decode()))
