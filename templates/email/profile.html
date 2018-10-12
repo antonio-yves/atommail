@@ -1,0 +1,117 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1> 
+        Contatos
+      </h1>
+      <ol class="breadcrumb">
+        <li class="active"><i class="fa fa-user"></i> Contatos</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <div class="row">
+        <div class="col-md-3">
+
+          <!-- Profile Image -->
+          <div class="box box-primary">
+            <div class="box-body box-profile">
+              <img class="profile-user-img img-responsive img-circle" src="{% static 'dist/img/profile.png' %}" alt="User profile picture">
+              {% if pessoa %}
+              <h3 class="profile-username text-center">{{pessoa.first_name}} {{pessoa.last_name}}</h3>
+
+              <p class="text-muted text-center">Membro desde {{ pessoa.date_joined|date:"d/M/Y" }}</p>
+
+              {% else %}
+              <h3 class="profile-username text-center">{{request.user.first_name}} {{request.user.last_name}}</h3>
+
+              <p class="text-muted text-center">Membro desde {{ request.user.date_joined|date:"d/M/Y" }}</p>
+
+              {% endif %}
+
+              <ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                  <b>Amigos</b> <p class="pull-right">{{contatos|length}}</p>
+                </li>
+              </ul>
+              {% if pessoa %}
+              {% if friend %}
+              <button class="btn btn-primary btn-block"><i class="fa fa-plus-user"></i> Amigos</button>
+              {% else %}
+              <a href="{% url 'atommail:add-friend' pessoa.pk %}" class="btn btn-primary btn-block"><b><i class="fa fa-plus"></i> Adicionar</b></a> 
+              {% endif %}
+              {% else %}
+              <a href="{% url 'core:logout' %}" class="btn btn-danger btn-block"><b>Sair</b></a>
+              {% endif %}
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              {% if pessoa %}
+              <li class="active"><a href="#activity" data-toggle="tab">Contatos do Usuário</a></li>
+              {% else %}
+              <li class="active"><a href="#activity" data-toggle="tab">Meus Contatos</a></li>
+              <li><a href="#timeline" data-toggle="tab">Adicionar Contatos</a></li>
+              {% endif %}
+            </ul>
+            <div class="tab-content">
+              {% if pessoa %}
+              <div class="active tab-pane" id="activity">
+              {% for contato in contatos %}
+              <div class="media">
+                <div class="media-left">
+                  <a href="{% url 'atommail:view-profile' contato.contact.pk %}">
+                    <img src="{% static 'dist/img/profile.png' %}" class="user-image img-circle" alt="User Image" height="75">
+                  </a>
+                </div>
+                <div class="media-body">
+                  <a href="{% url 'atommail:view-profile' contato.contact.pk %}"><h4 class="media-heading" style="margin-top: 3.5%;">{{contato.contact.first_name}} {{contato.contact.last_name}}</h4></a>
+                </div>
+              </div>
+              {% endfor %}
+              </div>
+              {% else %}
+              <div class="active tab-pane" id="activity">
+              {% for contato in contatos %}
+              <div class="media">
+                <div class="media-left">
+                  <a href="{% url 'atommail:view-profile' contato.contact.pk %}">
+                    <img src="{% static 'dist/img/profile.png' %}" class="user-image img-circle" alt="User Image" height="75">
+                  </a>
+                </div>
+                <div class="media-body">
+                  <a href="{% url 'atommail:view-profile' contato.contact.pk %}"><h4 class="media-heading" style="margin-top: 3.5%;">{{contato.contact.first_name}} {{contato.contact.last_name}}</h4></a>
+                </div>
+              </div>
+              {% endfor %}
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="timeline">
+                {% for usuario in usuarios %}
+                <p><a href="{% url 'atommail:view-profile' usuario.pk %}">{{usuario}}</a></p>
+                {% endfor %}
+              </div>
+              {% endif %}
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+    </section>
+    <!-- /.content -->
+{% endblock %}
